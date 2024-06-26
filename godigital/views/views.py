@@ -23,13 +23,10 @@ from django.db.models import Q
 
 
 
-@login_required
+# @login_required
 def index(request):
 
 
-# 	context={
-# 		'posts':
-# 	}
 	return render(request, 'index.html')
 
 
