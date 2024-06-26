@@ -1,6 +1,5 @@
 from django.db import models
-from datetime import datetime,timedelta
-from django.contrib.auth.models import AbstractUser
+from datetime import datetime
 
 
 class Technicians(models.Model):
