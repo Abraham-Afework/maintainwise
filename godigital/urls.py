@@ -1,5 +1,4 @@
 from django.urls import path
-# from posts import views
 from .views import digital_resume_views,views,miscellaneous_view
 
 

@@ -3,14 +3,6 @@ from datetime import datetime,timedelta
 from django.contrib.auth.models import AbstractUser
 
 
-
-class CustomUser(AbstractUser):
-    position = models.CharField(max_length=100, blank=True)
-
-    def __str__(self):
-        return self.username
-
-
 class Technicians(models.Model):
 
 	name = models.CharField(max_length=100)
