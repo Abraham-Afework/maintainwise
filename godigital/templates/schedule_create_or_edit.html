@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+        {% endif %}
+
+        <h1>Shift Schedule Form</h1>
+        <div class="col-md-10 mt-5">
+           <form id="all_forms" method="POST" action="{% if schedule %}{% url 'schedule_edit' schedule.technician.emp_id %}{% else %}{% url 'schedule_creater' %}{% endif %}">
+                {% csrf_token %}
+                <div class="mb-3 row">
+                    <!-- Form: Month and Year -->
+                    <div class="mb-3 row">
+                        <div class="col">
+                            <label for="month_year" class="form-label">Month and Year</label>
+                            <input type="month" class="form-control" name="month_year" value="{{ schedule.year }}-{% if schedule.month < 10 %}0{% endif %}{{ schedule.month }}" required>
+                        </div>
+                    </div>
+
+                    <!-- Form: Employee ID and Name -->
+                    <div class="col">
+                        <label for="emp_id" class="form-label">Employee ID</label>
+                        <input type="text" class="form-control" id="emp_id" value="{{schedule.technician.emp_id }}" name="emp_id" readonly>
+                    </div>
+                    <div class="col">
+                        <label for="employee_name" class="form-label">Employee Name</label>
+                        <input type="text" class="form-control" id="employee_name" value="{{ schedule.technician.name }}" name="name" readonly>
+                    </div>
+
+                    <!-- Form: Shift Selection -->
+                    <div class="col">
+                        <label for="shift" class="form-label">Select Shift</label>
+                        <select class="form-select" id="shift" name="shift">
+                            <option value="M" {% if schedule.shift == "M" %}selected{% endif %}>Morning</option>
+                            <option value="LM" {% if schedule.shift == "LM" %}selected{% endif %}>Late Morning</option>
+                            <option value="O" {% if schedule.shift == "O" %}selected{% endif %}>Office Hour</option>
+                            <option value="E" {% if schedule.shift == "E" %}selected{% endif %}>Evening</option>
+                            <option value="LE" {% if schedule.shift == "LE" %}selected{% endif %}>Late Evening</option>
+                            <option value="B" {% if schedule.shift == "B" %}selected{% endif %}>Borrowed</option>
+                            <option value="T" {% if schedule.shift == "T" %}selected{% endif %}>Flight</option>
+                            <option value="T" {% if schedule.shift == "T" %}selected{% endif %}>Training</option>
+                        </select>
+                    </div>
+
+                    <!-- Form: Day Off Selection -->
+                    <div class="col">
+                        <label for="dayoff1" class="form-label">Day Off</label>
+                        <select class="form-select" id="dayoff1" name="dayoff">
+                            <option selected disabled>Select Dayoff</option>
+                            <option value="LE" {% if schedule.dayoff == "LE" %}selected{% endif %}>Late sat-sun</option>
+                            <option value="B" {% if schedule.dayoff == "B" %}selected{% endif %}>mon-tue</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid gap-2 col-6 mx-auto pt-3">
+                    <div class="form-group">
+                        <input type="submit" name="submit" class="btn btn-info btn-md center" value="Submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

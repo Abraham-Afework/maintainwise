@@ -1,0 +1,85 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<!--{% load schedule_extras %}-->
+<div class="container mt-3">
+    <div class="row ">
+     {% if error_message %}
+    <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+    </div>
+    {% endif %}
+
+        <h1>Shift Schedule Form</h1>
+        <div class="col-md-10  mt-5">
+            <form id="all_forms" action="{% url 'schedule_create' %}" method="post">
+                	{% csrf_token %}
+                <div class="mb-3 row">
+                    <!-- Form 1: Employee ID and Name -->
+              <div class="mb-3 row">
+                    <div class="col">
+                        <label for="Month" class="form-label">Month and Year</label>
+                        <input type="month" class="form-control" name="month_year" min="{{ years.0 }}-01" value="{{ years.0 }}-{% if current_month < 10 %}0{% endif %}{{ current_month }}">
+                    </div>
+                </div>
+                    <div class="col">
+                        <label for="employee_id" class="form-label">Employee ID</label>
+                        <select class="form-select" id="emp_id" name="emp_id" hx-get="{% url 'get_employee_name' %}" hx-trigger="change" hx-target="#employee_name" hx-swap="outerHTML">
+                            <option selected disabled>Select ID</option>
+                            {% for technician in technicians %}
+                            <option value="{{ technician.emp_id }}">{{technician.emp_id|add:" --" }}{{ technician.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="employee_name" class="form-label">Employee Name</label>
+                        <input type="text" class="form-control" id="employee_name" name="name" disabled>
+                    </div>
+                    <div class="col">
+                       <label for="shift" class="form-label">Select Shift:</label>
+                        <select class="form-select" id="shift" name="shift">
+                            <option value="M">Morning</option>
+                            <option value="LM">Late Morning</option>
+                            <option value="O">Office Hour</option>
+                            <option value="E">Evening</option>
+                            <option value="LE">Late Evening</option>
+                            <option value="B">Borrowed</option>
+                            <option value="T">Flight</option>
+                            <option value="T">Training</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="dayoff1" class="form-label">Day Off</label>
+                        <select class="form-select" id="dayoff1" name="dayoff">
+                            <option selected disabled>Select Dayoff </option>
+                            <!-- Loop through dayoff1 items from the database and populate options -->
+                            {%for day_off_key, day_off_value in day_off_choice %}
+                            <option value="{{day_off_value}}">{{ day_off_value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                     <div class="col">
+                      <label for="dayoff1" class="form-label"> </label>
+                   <div class="button">
+                    <button type="button" hx-trigger="click" hx-target="#result" class="btn btn-success">Add More + </button>
+                         </div>
+                </div>
+                </div>
+                <!-- added form Form : -->
+
+                <!-- Form 4: Month and Year -->
+
+                <div class="d-grid gap-2 col-6 mx-auto pt-3">
+                   <div class="form-group">
+                                <input type="submit" name="submit" class="btn btn-info btn-md center" value="submit">
+                            </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

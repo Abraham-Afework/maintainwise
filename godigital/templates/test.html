@@ -1,0 +1,20 @@
+ <div class="mt-5">
+            <h4>Debugging Form Data:</h4>
+
+
+            <ul>
+                {% for schedule_data in schedules %}
+                    <li>
+                        <strong>Schedule Form Data:</strong>
+                        <ul>
+                            <li><strong>Employee ID:</strong> {{ schedule_data.emp_id }}</li>
+                            <li><strong>Start Date:</strong> {{ schedule_data.start_date }}</li>
+                            <li><strong>End Date:</strong> {{ schedule_data.end_date }}</li>
+                            <li><strong>Shift:</strong> {{ schedule_data.shift }}</li>
+                            <li><strong>Day Off:</strong> {{ schedule_data.day_off }}</li>
+                            <!-- Add more fields as needed -->
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>

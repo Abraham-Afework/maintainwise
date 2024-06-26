@@ -1,0 +1,87 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+{% load schedule_extras %}
+<div class="container mt-3">
+<!--    <div class="row ">-->
+<!--     {% if error_message %}-->
+<!--    <div class="alert alert-danger" role="alert">-->
+<!--        {{ error_message }}-->
+<!--    </div>-->
+    <!--{% endif %}-->
+
+       <h2>Create Schedule</h2>
+       <div class="col-md-10  mt-5">
+        <form method="post" action="{% url 'schedule_create' %}">
+        {% csrf_token %}
+                 <div class="mb-3 row">
+                    <div class="col">
+                        <label for="employee_id" class="form-label">Employee Name</label>
+                        <select class="form-select" id="emp_id" name="emp_id" hx-get="{% url 'get_employee_name' %}" hx-trigger="change" hx-target="#employee_id" hx-swap="outerHTML">
+                            <option selected disabled>Select ID</option>
+                            {% for technician in technicians %}
+                            <option value="{{ technician.emp_id }}">{{ technician.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="employee_name" class="form-label">Employee ID</label>
+                        <input type="text" class="form-control" id="employee_id"  disabled>
+                    </div>
+                    </div>
+                     <div class="mb-3 row">
+                     <div class="col">
+        <label for="start_date" class="form-label">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" required  class="form-control" >
+    </div>
+    <div class="col">
+        <label for="end_date" class="form-label">End Date:</label>
+        <input type="date" id="end_date" name="end_date" required  class="form-control" >
+  </div><div class="col">
+        <label for="shift" class="form-label">Shift:</label>
+        <select id="shift" name="shift"  class="form-select" required>
+              <option value="" disabled selected>Select a shift</option>
+            <option value="M">Morning</option>
+             <option value="LM">Late Morning</option>
+            <option value="O">Office Hour</option>
+            <option value="E">Evening</option>
+             <option value="LE">Late Evening</option>
+             <option value="Night">Night</option>
+             <option value="V">Vacation</option>
+             <option value="FT">Flight</option>
+             <option value="TR">Training</option>
+             <option value="CH">Coaching</option>
+
+        </select>
+         </div>
+         <div class="col">
+       <label for="shift" class="form-label">Day Off:</label>
+         <select id="shift" name="day_off"  class="form-select" required>
+             <option value="" disabled selected>Select Day Off</option>
+
+            <option value="Mon-Tue">Mon-Tue</option>
+            <option value="Tue-Wed">Tue-Wed</option>
+            <option value="Wed-Thu">Wed-Thu</option>
+            <option value="Thu-Fri">Thu-Fri</option>
+            <option value="Fri-Sat">Fri-Sat</option>
+            <option value="Sat-Sun">Sat-Sun</option>
+            <option value="Sun-Mon">Sun-Mon</option>
+
+        </select>
+        </div>
+</div>
+ <hr/>
+
+                    <div class="col text-center mb-3">
+                <button type="submit" class="btn btn-success btn-lg">Submit</button>
+            </div>
+
+
+    </form>
+
+
+</div>
+
+
+{% endblock %}

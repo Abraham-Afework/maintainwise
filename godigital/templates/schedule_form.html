@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col">
+        <label for="emp_id" class="form-label">Employee ID</label>
+        <select class="form-select" name="emp_id" hx-get="{% url 'get_employee_name' %}" hx-trigger="change" hx-target=".employee-name" hx-swap="outerHTML">
+            <option selected disabled>Select ID</option>
+            {% for technician in technicians %}
+                <option value="{{ technician.emp_id }}">{{ technician.emp_id }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col">
+        <label for="employee_name" class="form-label">Employee Name</label>
+        <input type="text" class="form-control employee-name" name="name" disabled>
+    </div>
+    <div class="col">
+        <label for="start_date" class="form-label">Start Date:</label>
+        <input type="date" name="start_date" required class="form-control">
+    </div>
+    <div class="col">
+        <label for="end_date" class="form-label">End Date:</label>
+        <input type="date" name="end_date" required class="form-control">
+    </div>
+    <div class="col">
+        <label for="shift" class="form-label">Shift:</label>
+        <select name="shift" class="form-select" required>
+            <option value="" disabled selected>Select a shift</option>
+            <option value="M">Morning</option>
+            <option value="LM">Late Morning</option>
+            <option value="O">Office Hour</option>
+            <option value="E">Evening</option>
+            <option value="LE">Late Evening</option>
+            <option value="Night">Night</option>
+            <option value="V">Vacation</option>
+            <option value="F">Flight</option>
+            <option value="TR">Training</option>
+            <option value="CH">Coaching</option>
+        </select>
+    </div>
+    <div class="col">
+        <label for="day_off" class="form-label">Day Off:</label>
+        <select name="day_off" class="form-select" required>
+            <option value="" disabled selected>Select Day Off</option>
+            <option value="Mon-Tue">Mon-Tue</option>
+            <option value="Tue-Wed">Tue-Wed</option>
+            <option value="Wed-Thu">Wed-Thu</option>
+            <option value="Thu-Fri">Thu-Fri</option>
+            <option value="Fri-Sat">Fri-Sat</option>
+            <option value="Sat-Sun">Sat-Sun</option>
+            <option value="Sun-Mon">Sun-Mon</option>
+        </select>
+    </div>
+</div>

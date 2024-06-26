@@ -1,0 +1,82 @@
+<!-- miscellaneous/partials/flight_schedule_list.html -->
+<div class="container mt-4">
+    <h2 class="mb-4">Flight Schedule</h2>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Employee ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight_schedule in flight_schedules %}
+                <tr>
+                    <td>{{ flight_schedule.no }}</td>
+                    <td>{{ flight_schedule.tech_name.emp_id }}</td>
+                    <td>{{ flight_schedule.tech_name.name }}</td>
+                    <td>{{ flight_schedule.start_date }}</td>
+                    <td>{{ flight_schedule.end_date }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="container mt-4">
+    <h2 class="mb-4">Schedule Chart</h2>
+    <canvas id="scheduleChart"></canvas>
+</div>
+
+<script>
+    const schedulesByMonth = {{ schedules_by_month|safe }};
+    const sortedMonths = {{ sorted_months|safe }};
+    
+    const data = {
+        labels: sortedMonths,
+        datasets: []
+    };
+
+    for (const [month, schedules] of Object.entries(schedulesByMonth)) {
+        const dataPoints = schedules.map(schedule => ({
+            x: schedule.tech_name.name,
+            y: new Date(schedule.start_date).getDate(),
+            label: schedule.tech_name.name
+        }));
+
+        data.datasets.push({
+            label: month,
+            data: dataPoints,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        });
+    }
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Technicians'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Day of Month'
+                    }
+                }
+            }
+        }
+    };
+
+    const scheduleChart = new Chart(
+        document.getElementById('scheduleChart'),
+        config
+    );
+</script>

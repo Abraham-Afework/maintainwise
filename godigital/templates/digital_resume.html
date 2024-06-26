@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% load schedule_extras %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-2"></div> <!-- Empty column to create space -->
+    <div class="col-md-10 mt-5">
+        <!-- Search Form with htmx -->
+        <form hx-post="{% url 'monthly_schedule' %}" hx-target="#schedule-table" hx-swap="innerHTML" method="POST">
+            {% csrf_token %}
+            <div class="mb-3 row align-items-end">
+                <!-- Form elements -->
+                <div class="col">
+                    <label for="fleet" class="form-label">Fleet</label>
+                    <select class="form-select" id="fleet" name="fleet">
+                         <option value="B777">B777</option>
+                        <option value="A350">A350</option>
+                        <option value="B787">B787</option>
+                         <option value="B737">B737</option>
+                          <option value="B767">B767</option>
+                          <option value="Q400">Q400</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="fleet" class="form-label">Aircraft Reg</label>
+                    <select class="form-select" id="fleet" name="fleet">
+                        <option value="ET-ANN">ET-ANN</option>
+                        <option value="ET-ANN">ET-ANO</option>
+                        <option value="ET-ANN">ET-ANP</option>
+                         <option value="ET-ANN">ET-ANR</option>
+                          <option value="ET-ANN">ET-AQL</option>
+
+                    </select>
+                </div>
+                <!--<div class="col">-->
+                <!--    <label for="shift" class="form-label">Shift</label>-->
+                <!--    <select class="form-select" id="shift" name="shift">-->
+                <!--        <option value="All" selected>All</option>-->
+                <!--        <option value="M">Day</option>-->
+                <!--        <option value="E">Evening</option>-->
+                <!--        <option value="N">Night</option>-->
+                <!--    </select>-->
+                <!--</div>-->
+                <div class="col">
+                    <!-- Submit button -->
+                    <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<table class="table table-sm table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+            <th scope="col">#</th>
+             <th scope="col">A/C Reg</th>
+            <th scope="col">Fault Description</th>
+            <th scope="col">Action Taken</th>
+            <th scope="col">Status</th>
+            <!-- Add more headers as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        {{faults}}
+        {% for fault in faults %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+             <td>{{ fault.aircraft.aircraft_reg }}</td>
+            <td>{{ fault.faults }}</td>
+            <td>{{ fault.action_taken }}</td>
+            <td>{{ fault.status }}</td>
+            <!-- Add more columns as needed -->
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">No faults found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
