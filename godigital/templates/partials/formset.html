@@ -1,0 +1,26 @@
+<!-- partials/formset.html -->
+
+{% for form in formset %}
+    <div class="schedule-form mb-3 row">
+        <div class="col">
+            {{ form.emp_id.label_tag }}
+            {{ form.emp_id }}
+        </div>
+        <div class="col">
+            {{ form.start_date.label_tag }}
+            {{ form.start_date }}
+        </div>
+        <div class="col">
+            {{ form.end_date.label_tag }}
+            {{ form.end_date }}
+        </div>
+        <div class="col">
+            {{ form.shift.label_tag }}
+            {{ form.shift }}
+        </div>
+        <div class="col">
+            {{ form.day_off.label_tag }}
+            {{ form.day_off }}
+        </div>
+    </div>
+{% endfor %}

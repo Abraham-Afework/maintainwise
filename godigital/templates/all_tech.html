@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+{% for tech in posts reversed %}
+    <div class="card">
+		<a href = "#">  <h2> {{ tech.name }}</h2></a>
+	  <h3>{{ tech.emp_id}}</h3>
+
+
+    </div>
+    {% endfor %}
+{% endblock %}

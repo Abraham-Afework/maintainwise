@@ -1,0 +1,63 @@
+    <h2 class="text-center">{{ fleet }} Crew {{month_name }}  {{ year }} Monthly Schedule</h2>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-bordered  table-hover border border-dark">
+                        <thead class="table-dark">
+                            <tr>
+
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Position</th>
+                                {% for day, weekday_name in days %}
+                                    <th>{{ weekday_name|slice:":3" }} {{ day }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+    {% for item in schedule_data %}
+        {% if item.technician.position == "Teamleader" %}
+            <!-- Display Team Leader -->
+            <tr>
+                <td>{{ item.technician.emp_id }}
+                    <a href="{% url 'edit_schedule' item.id %}">
+                        <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                    </a>
+                </td>
+                <td>{{ item.technician.name }}</td>
+                <td>{{ item.technician.position }}</td>
+                {% for day, weekday_name in days %}
+                    <td {% if weekday_name in item.dayoff %}style="background-color: gray;"{% endif %}>
+                        {% if weekday_name in item.dayoff %}D{% else %}{{ item.shift }}{% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endif %}
+    {% endfor %}
+    {% for item in schedule_data %}
+        {% if item.technician.position != "Teamleader" %}
+            <!-- Display Technicians -->
+            <tr>
+                <td>{{ item.technician.emp_id }}
+                    <a href="{% url 'edit_schedule' item.id %}">
+                        <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                    </a>
+                </td>
+                <td>{{ item.technician.name }}</td>
+                <td>{{ item.technician.position }}</td>
+                {% for day, weekday_name in days %}
+                    <td {% if weekday_name in item.dayoff %}style="background-color: gray;"{% endif %}>
+                        {% if weekday_name in item.dayoff %}D{% else %}{{ item.shift }}{% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endif %}
+    {% endfor %}
+</tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

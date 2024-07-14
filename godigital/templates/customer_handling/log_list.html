@@ -1,0 +1,62 @@
+ <style>
+        .print-btn, .export-btn {
+            margin-bottom: 20px;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #table-to-print, #table-to-print * {
+                visibility: visible;
+            }
+            #table-to-print {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Technical Handling Service Log</h2>
+        <h1>{{ operator_airline }}</h1>
+
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+
+        <button onclick="window.print()" class="btn btn-primary print-btn">Print</button>
+        <button onclick="window.location.href='{% url 'export_to_excel' %}'" class="btn btn-success export-btn">Export to Excel</button>
+
+        <table id="table-to-print" class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Aircraft Type</th>
+                    <th>Registration No</th>
+                    <th>Flight No</th>
+                    <th>Remarks</th>
+                    <th>Service Check/Action Taken</th>
+                    <th>Arrival Time</th>
+                    <th>Departure Time</th>
+                    <th>Handeled By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.date }}</td>
+                    <td>{{ log.aircraft_type }}</td>
+                    <td>{{ log.reg_no }}</td>
+                    <td>{{ log.flt_no }}</td>
+                    <td>{{ log.remarks }}</td>
+                    <td>{{ log.svc_chk_action_taken }}</td>
+                    <td>{{ log.arr_time }}</td>
+                    <td>{{ log.dep_time }}</td>
+                    <td>20797</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>

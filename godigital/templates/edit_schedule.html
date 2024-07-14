@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="row">
+        {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+        {% endif %}
+
+        <h1>Shift Schedule Form</h1>
+        <div class="col-md-10 mt-5">
+           <form id="all_forms" action="{% url 'schedule_edit' technician.emp_id %} "  method="POST">
+                {% csrf_token %}
+                <div class="mb-3 row">
+                    <!-- Form: Month and Year -->
+                    <div class="mb-3 row">
+                        <div class="col">
+                            <label for="month_year" class="form-label">Month and Year</label>
+                            <input type="month" class="form-control" id="month_year" name="month_year"
+                   value="{{ year }}-{% if month < 10 %}0{% endif %}{{ month }}" readonly>
+        </div>
+                    </div>
+
+                    <!-- Form: Employee ID and Name -->
+                    <div class="col">
+                        <label for="emp_id" class="form-label">Employee ID</label>
+                        <input type="text" class="form-control" id="emp_id" value="{{technician.emp_id }}" name="emp_id" readonly>
+                    </div>
+                    <div class="col">
+                        <label for="employee_name" class="form-label">Employee Name</label>
+                        <input type="text" class="form-control" id="employee_name" value="{{technician.name }}" name="name" readonly>
+                    </div><div class="mb-3 row">
+                     <div class="col">
+        <label for="start_date" class="form-label">Start Date:</label>
+        <input type="date" id="start_date" name="start_date" required  class="form-control" >
+    </div>
+    <div class="col">
+        <label for="end_date" class="form-label">End Date:</label>
+        <input type="date" id="end_date" name="end_date" required  class="form-control" >
+  </div><div class="col">
+        <label for="shift" class="form-label">Shift:</label>
+        <select id="shift" name="shift"  class="form-select" required>
+              <option value="" disabled selected>Select a shift</option>
+            <option value="M">Morning</option>
+             <option value="LM">Late Morning</option>
+            <option value="O">Office Hour</option>
+            <option value="E">Evening</option>
+             <option value="LE">Late Evening</option>
+             <option value="Night">Night</option>
+             <option value="V">Vacation</option>
+             <option value="FT">Flight</option>
+             <option value="TR">Training</option>
+             <option value="CH">Coaching</option>
+
+        </select>
+         </div>
+         <div class="col">
+       <label for="shift" class="form-label">Day Off:</label>
+         <select id="shift" name="day_off"  class="form-select" required>
+             <option value="" disabled selected>Select Day Off</option>
+
+            <option value="Mon-Tue">Mon-Tue</option>
+            <option value="Tue-Wed">Tue-Wed</option>
+            <option value="Wed-Thu">Wed-Thu</option>
+            <option value="Thu-Fri">Thu-Fri</option>
+            <option value="Fri-Sat">Fri-Sat</option>
+            <option value="Sat-Sun">Sat-Sun</option>
+            <option value="Sun-Mon">Sun-Mon</option>
+
+        </select>
+        </div>
+</div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid gap-2 col-6 mx-auto pt-3">
+                    <div class="form-group">
+                        <input type="submit" name="submit" class="btn btn-info btn-md center" value="Submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

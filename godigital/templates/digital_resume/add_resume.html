@@ -1,0 +1,70 @@
+{% extends '../base.html' %}
+
+{% block content %}
+<h2>Create Fault</h2>
+<div class="container mt-5">
+  <form method="post" action="{% url 'add_resume' %}">
+    {% csrf_token %}
+      <!-- Fleet and Aircraft Registration -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
+        <label for="fleet" class="form-label">Fleet</label>
+        <select class="form-select" id="fleet" name="fleet"
+                hx-get="{% url 'get_aircraft_name' %}"
+                hx-trigger="change"
+                hx-target="#aircraft_name"
+                hx-swap="innerHTML">
+          <option selected disabled>Select fleet</option>
+          {% for choice in fleet_choices %}
+            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="aircraft_name" class="form-label">Aircraft Registration</label>
+        <select class="form-select" id="aircraft_name" name="aircraft"
+                hx-get="{% url 'get_faults' %}"
+                hx-trigger="change"
+                hx-target="#faults"
+                hx-swap="innerHTML">
+          <option selected disabled>Select Aircraft</option>
+          <!-- Options will be populated here dynamically by HTMX -->
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="needs_follow_up" class="form-label">Needs Follow-Up</label>
+        <div class="form-check">
+          <input type="checkbox" id="needs_follow_up" name="needs_follow_up" class="form-check-input">
+          <label class="form-check-label" for="needs_follow_up">Yes</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fault Description -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label for="fault" class="form-label">Fault Name</label>
+        {{ form.faults }}
+      </div>
+      <div class="col-md-6">
+        <label for="fault_description" class="form-label">Action Taken and Fault Description</label>
+        {{ form.action_taken }}
+      </div>
+    </div>
+     <div class="col-md-6">
+        <label for="fault_description" class="form-label">Action Taken and Fault Description</label>
+        {{ form.found_date }}
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="row mb-3">
+      <div class="col text-center">
+        <button type="submit" class="btn btn-success btn-lg">Submit</button>
+      </div>
+    </div>
+  </form>
+
+  <div id="faults">am here</div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load schedule_extras %}
+<div class="container mt-3">
+
+
+    <h2>Create Schedule</h2>
+    <div class="col-md-10  mt-5">
+        <form method="post" action="{% url 'add_flight_schedule' %}">
+            {% csrf_token %}
+            <div class="mb-3 row">
+                <div class="col">
+                    <label for="employee_id" class="form-label">Employee ID</label>
+                    <select class="form-select" id="emp_id" name="emp_id" hx-get="{% url 'get_employee_name' %}" hx-trigger="change" hx-target="#employee_name" hx-swap="outerHTML">
+                        <option selected disabled>Select ID</option>
+                        {% for technician in technicians %}
+                            <option value="{{ technician.emp_id }}">{{ technician.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="employee_name" class="form-label">Employee Name</label>
+                    <input type="text" class="form-control" id="employee_name" name="name" disabled>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col">
+                    <label for="start_date" class="form-label">Start Date:</label>
+                    <input type="date" id="start_date" name="start_date" required class="form-control">
+                </div>
+                <div class="col">
+                    <label for="end_date" class="form-label">End Date:</label>
+                    <input type="date" id="end_date" name="end_date" required class="form-control">
+                </div>
+            </div>
+            <hr/>
+            <div class="col text-center mb-3">
+                <button type="submit" class="btn btn-success btn-lg">Submit</button>
+            </div>
+        </form>
+         <!-- Display error and success messages -->
+   {% if messages %}
+        <div class="row">
+            <div class="col">
+                {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %} alert-danger {% elif message.tags %} alert-{{ message.tags }} {% else %} alert-info {% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    </div>
+    <div class="container mt-4">
+        <h2 class="mb-4">Flight Schedule</h2>
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Employee ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for flight_schedule in flight_schedules %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ flight_schedule.tech_name.emp_id }}</td>
+                        <td>{{ flight_schedule.tech_name.name }}</td>
+                        <td>{{ flight_schedule.start_date }}</td>
+                        <td>{{ flight_schedule.end_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load schedule_extras %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-2"></div> <!-- Empty column to create space -->
+    <div class="col-md-10 mt-5">
+        <!-- Search Form with htmx -->
+        <form hx-post="{% url 'monthly_schedule' %}" hx-target="#schedule-table" hx-swap="innerHTML" method="POST">
+            {% csrf_token %}
+            <div class="mb-3 row align-items-end">
+                <!-- Form elements -->
+                <div class="col">
+                    <label for="month_year" class="form-label">Month and Year</label>
+                    <input type="month" class="form-control" name="month_year"
+                    value="{{ year }}-{% if month < 10 %}0{% endif %}{{ month }}">
+                    <!--<input type="month" class="form-control"  name="month_year" min="{{ years.0 }}-01" value="{{ years.0 }}-{% if current_month < 10 %}0{% endif %}{{ current_month }}">-->
+                </div>
+                <div class="col">
+                    <label for="fleet" class="form-label">Fleet</label>
+                    <select class="form-select" id="fleet" name="fleet">
+                        <option value="B777-PAX">B777 PAX</option>
+                        <option value="B737">B737</option>
+                        <option value="A350">A350</option>
+                        <option value="Cargo">Cargo</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="shift" class="form-label">Shift</label>
+                    <select id="shift" name="shift"  class="form-select" required>
+                            <option value="ALL"> ALL</option>
+                            <option value="M">Morning</option>
+                            <option value="LM">Late Morning</option>
+                            <option value="O">Office Hour</option>
+                            <option value="E">Evening</option>
+                            <option value="LE">Late Evening</option>
+                            <option value="Night">Night</option>
+                            <option value="V">Vacation</option>
+                            <option value="FT">Flight</option>
+                            <option value="TR">Training</option>
+                            <option value="CH">Coaching</option>
+
+                    </select>
+                </div>
+                <div class="col">
+                    <!-- Submit button -->
+                    <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="loading-spinner" style="display: none; text-align: center;">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+
+
+<div id="schedule-table" hx-get="{% url 'monthly_schedule' %}" hx-trigger="load" hx-swap="innerHTML" hx-indicator="#loading-spinner">{{ rendered_template | safe }}</div>
+{% endblock %}

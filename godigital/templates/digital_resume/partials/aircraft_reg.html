@@ -1,0 +1,6 @@
+ <option selected disabled>Select Aircraft</option>
+{% for aircraft in aircrafts %}
+
+    <option value="{{ aircraft.id }}">{{ aircraft.aircraft_reg }}</option>
+
+{% endfor %}

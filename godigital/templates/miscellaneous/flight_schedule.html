@@ -1,0 +1,29 @@
+{% extends '../base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">Flight Schedule</h2>
+  <table class="table table-bordered table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">Employee ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for flight_schedule in flight_schedules %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ flight_schedule.tech_name.emp_id }}</td>
+          <td>{{ flight_schedule.tech_name.name }}</td>
+          <td>{{ flight_schedule.start_date }}</td>
+          <td>{{ flight_schedule.end_date }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

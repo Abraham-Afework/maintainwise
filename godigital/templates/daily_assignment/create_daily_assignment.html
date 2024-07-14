@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Daily Assignment</h1>
+    <form method="get" action="{% url 'daily_assignment' %}">
+        <div class="form-group">
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" name="date" class="form-control" value="{{ selected_date|date:'Y-m-d' }}">
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Show Schedules</button>
+    </form>
+
+    <h2 class="mt-4">Schedules for {{ selected_date }}</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Assignment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for schedule in schedules %}
+            <tr>
+                <td>{{ schedule.technician.emp_id }}</td>
+                <td>{{ schedule.technician.name }}</td>
+                <td>{{ schedule.assignment }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

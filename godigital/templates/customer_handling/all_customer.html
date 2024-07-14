@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load schedule_extras %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-2"></div> <!-- Empty column to create space -->
+    <div class="col-md-10 mt-5">
+        <!-- Search Form with htmx -->
+        <form hx-get="{% url 'log_list' %}" hx-target="#schedule-table" hx-swap="innerHTML" method="GET">
+    {% csrf_token %}
+    <div class="mb-3 row align-items-end">
+        <div class="col">
+            <label for="month_year" class="form-label">Month and Year</label>
+            <input type="month" class="form-control" name="month_year"
+                   value="{{ current_year }}-{% if current_month < 10 %}0{% endif %}{{ current_month }}">
+        </div>
+        <div class="col">
+            <label for="operator" class="form-label">Operator Airline</label>
+            <select class="form-select" id="operator_airline" name="operator_airline">
+                {% for customer in customer_airlines %}
+                <option value="{{ customer.id }}">{{ customer.airline_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+        </div>
+    </div>
+</form>
+    </div>
+</div>
+<div id="loading-spinner" style="display: none; text-align: center;">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+
+
+<div id="schedule-table"></div>
+{% endblock %}

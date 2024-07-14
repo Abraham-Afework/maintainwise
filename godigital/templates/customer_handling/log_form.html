@@ -1,0 +1,75 @@
+
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<div class="container">
+    <div class="card border-dark mb-3">
+  <div class="card-header">Service Log Form</div>
+  <div class="card-body">
+    <!--<h5 class="card-title">Dark card title</h5>-->
+     <form method="post">
+            {% csrf_token %}
+            <div class="mb-3 row">
+                <div class="col">
+                    {{ form.date|as_crispy_field }}
+                </div>
+
+               <div class="col">
+                {{ form.operator_airline|as_crispy_field }}
+                </div>
+                <div class="col">
+                {{ form.aircraft_type|as_crispy_field }}
+                </div>
+
+                <div class="col">
+                    {{ form.reg_no|as_crispy_field }}
+                </div>
+             <div class="col">
+                      {{ form.flt_no|as_crispy_field }}
+
+                </div>
+            </div>
+            <div class="mb-3 row">
+
+                <div class="col">
+                   {{ form.remarks|as_crispy_field }}
+                </div>
+
+            </div>
+            <div class="mb-3 row">
+                <div class="col">
+                    {{ form.svc_chk_action_taken|as_crispy_field }}
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <div class="col">
+                    {{ form.arr_time|as_crispy_field }}
+                </div>
+                <div class="col">
+                    {{ form.dep_time|as_crispy_field }}
+                </div>
+
+            </div>
+            <div class="col text-center mb-3">
+                <button type="submit" class="btn btn-success btn-lg">Submit</button>
+            </div>
+
+        </form>
+
+  </div>
+</div>
+
+
+    </div>
+<script>
+    document.addEventListener('htmx:afterSwap', function(event) {
+        if (event.detail.target.id === 'id_reg_no') {
+            $('#id_reg_no').selectpicker('refresh');
+        }
+    });
+</script>
+    </script>
+{% endblock %}

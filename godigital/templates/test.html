@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Create Batch Schedules</h1>
+    <form id="batch-schedule-form" method="post" action="{% url 'schedule_create_batch' %}">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <div id="schedules-container">
+            {% include 'partials/formset.html' with formset=formset technicians=technicians %}
+        </div>
+        <div class="mb-3">
+            <label for="form-count" class="form-label">Number of Schedules</label>
+            <input type="number" class="form-control" id="form-count" name="extra_forms_count" value="{{ formset.total_form_count }}" hx-get="{% url 'schedule_create_batch' %}" hx-trigger="change delay:500ms" hx-target="#schedules-container" hx-swap="innerHTML">
+        </div>
+        <button type="submit" class="btn btn-primary">Create Schedules</button>
+    </form>
+</div>
+{% endblock %}
