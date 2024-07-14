@@ -30,8 +30,8 @@ from django.forms import formset_factory
 def index(request):
 
 
-    form = PasswordChangeForm(request.user)
-    return render(request, 'index.html', {'form': form})
+    # form = PasswordChangeForm(request.user)
+    return render(request, 'index.html')
 
 
 
@@ -238,7 +238,7 @@ def new_monthly_schedule(request):
         # Apply shift filter only if it is not "All"
 
         if shift == "M":
-            schedules = schedules.filter(Q(shift='M') | Q(shift='O') |  Q(shift='LM') | Q(shift=f'{shift}-off') |  Q(shift='O-off'))
+            schedules = schedules.filter(Q(shift='M') |  Q(shift=f'{shift}-off'))
 
         elif shift == "LM":
             schedules = schedules.filter(Q(shift='LM') | Q(shift=f'{shift}-off'))
@@ -248,6 +248,10 @@ def new_monthly_schedule(request):
 
         elif shift == "E":
             schedules = schedules.filter(Q(shift='E') | Q(shift='LE')  | Q(shift=f'{shift}-off'))
+
+        elif shift == "LE":
+            schedules = schedules.filter(Q(shift='LE') | Q(shift=f'{shift}-off'))
+
 
         elif shift == "N":
             schedules = schedules.filter(Q(shift='N') | Q(shift=f'{shift}-off'))

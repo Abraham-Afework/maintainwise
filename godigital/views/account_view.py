@@ -36,6 +36,9 @@ def create_technician_profiles(request):
             role='employee'  # Assuming default role is 'employee'
         )
 
+def change_password_modal(request):
+    form = CustomPasswordChangeForm(request.user)
+    return render(request, 'change_password_modal.html', {'form': form})
 
 @login_required
 def change_password(request):
@@ -43,11 +46,12 @@ def change_password(request):
         form = CustomPasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            return redirect('password_change_done')  # Redirect to password change success page
+            return redirect('login')  # Redirect to profile page after successful password change
+        else:
+            pass
     else:
         form = CustomPasswordChangeForm(request.user)
-
-    return render(request, 'change_password.html', {'form': form})
+    return render(request, 'change_password_form.html', {'form': form})
 
 class MyPasswordChangeView(PasswordChangeView):
     form_class = CustomPasswordChangeForm

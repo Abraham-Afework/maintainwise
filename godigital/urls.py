@@ -5,10 +5,11 @@ from .views import digital_resume_views,views,miscellaneous_view,daily_assignmen
 
 urlpatterns = [
 
-    path('change-password/', account_view.change_password, name='change_password'),
-    path('change-password-class/', account_view.MyPasswordChangeView.as_view, name='change_password_class'),
+    # path('change-password/', account_view.change_password, name='change_password'),
+    # path('change-password-class/', account_view.MyPasswordChangeView.as_view, name='change_password_class'),
 
-
+    path('change-password/', account_view.change_password_modal, name='change_password_modal'),
+    path('change-password/submit/', account_view.change_password, name='change_password'),
 
 
 

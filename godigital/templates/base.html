@@ -3,7 +3,7 @@
 
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>MAINTAINWISE</title>
-  </head>
+</head>
 <style>
     /* Custom CSS to style Bootstrap Select dropdown toggle */
     .bootstrap-select > .dropdown-toggle {
@@ -29,255 +29,237 @@
     }
 </style>
 
-
-
-  <body>
+<body>
     <!-- top navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container-fluid">
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#sidebar"
-          aria-controls="offcanvasExample"
-        >
-          <span class="navbar-toggler-icon" data-bs-target="#sidebar"></span>
-        </button>
-        <a class="navbar-brand me-auto ms-lg-0 ms-3 text-uppercase fw-bold" href="#">M A I N T A I N W I S E</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#topNavBar"
-          aria-controls="topNavBar"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="topNavBar">
-          <ul class="navbar-nav d-flex ms-auto my-3 my-lg-0">
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle ms-2"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <span> {{ user.first_name }} {{ user.last_name }} &nbsp; <i class="bi bi-person-fill"></i></span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                {% if user.is_authenticated %}
-                     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-            <!-- Modal Trigger Button -->
-                    <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button></li>
-                    <!--<li><a class="dropdown-item" href="{% url 'logout' %}">Edit Profile</a></li>-->
-                {% endif %}
-            </ul>
-            </li>
-          </ul>
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="offcanvasExample">
+                <span class="navbar-toggler-icon" data-bs-target="#sidebar"></span>
+            </button>
+            <a class="navbar-brand me-auto ms-lg-0 ms-3 text-uppercase fw-bold" href="#">M A I N T A I N W I S E</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavBar" aria-controls="topNavBar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="topNavBar">
+                <ul class="navbar-nav d-flex ms-auto my-3 my-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle ms-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>{{ user.first_name }} {{ user.last_name }} &nbsp; <i class="bi bi-person-fill"></i></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            {% if user.is_authenticated %}
+                                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                                <!-- Modal Trigger Button -->
+                                <li><a class="dropdown-item" href="#" hx-get="{% url 'change_password_modal'%}" hx-target="#modal-content" hx-trigger="click" hx-swap="innerHTML" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    Change Password</a></li>
+                                <!-- Add Edit Profile link here if needed -->
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </div>
     </nav>
     <!-- top navigation bar -->
     <!-- offcanvas -->
     <div class="offcanvas offcanvas-start sidebar-nav bg-dark" tabindex="-1" id="sidebar">
-      <div class="offcanvas-body p-0">
-        <nav class="navbar-dark">
-          <ul class="navbar-nav">
-            <li>
-              <div class="text-muted small fw-bold text-uppercase px-3">CORE</div>
-            </li>
-            <li>
-              <a href={% url 'index' %} class="nav-link px-3 active">
-                <span class="me-2"><i class="bi bi-speedometer2"></i></span>
-                <span>Dashboard</span>
-              </a>
-            </li>
-            <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
-            <li>
-              <div class="text-muted small fw-bold text-uppercase px-3 mb-3">Interface</div>
-            </li>
-            <li>
-              <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#daily_sssignment">
-                <span class="me-2"><i class="bi bi-person-walking"></i></span>
-                <span>Daily Assignment</span>
-                <span class="ms-auto">
-                  <span class="right-icon">
-                    <i class="bi bi-airplane"></i>
-                  </span>
-                </span>
-              </a>
-              <div class="collapse" id="daily_sssignment">
-                <ul class="navbar-nav ps-3">
-                  {% if user.profile.role == 'team_leader' %}
+        <div class="offcanvas-body p-0">
+            <nav class="navbar-dark">
+                <ul class="navbar-nav">
                     <li>
-                      <a href="{% url 'daily_assignment' %}" class="nav-link px-3">
-                        <span class="me-2"><i class="bi bi-person-add"></i></span>
-                        <span>Create Assignment</span>
-                      </a>
+                        <div class="text-muted small fw-bold text-uppercase px-3">CORE</div>
                     </li>
-                  {% endif %}
-                  <li>
-                    <a href="{% url 'daily_assignment' %}" class="nav-link px-3">
-                      <span class="me-2"><i class="bi bi-calendar-month-fill"></i></span>
-                      <span>View Assignment</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li>
-              <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#layouts">
-                <span class="me-2"><i class="bi bi-table"></i></span>
-                <span>Monthly Crew Schedule</span>
-                <span class="ms-auto">
-                  <span class="right-icon">
-                    <i class="bi bi-airplane"></i>
-                  </span>
-                </span>
-              </a>
-              <div class="collapse" id="layouts">
-                <ul class="navbar-nav ps-3">
-                  {% if user.profile.role == 'team_leader' %}
                     <li>
-                      <a href="{% url 'start_schedule' %}" class="nav-link px-3">
-                        <span class="me-2"><i class="bi bi-person-add"></i></span>
-                        <span>Add Schedule</span>
-                      </a>
+                        <a href={% url 'index' %} class="nav-link px-3 active">
+                            <span class="me-2"><i class="bi bi-speedometer2"></i></span>
+                            <span>Dashboard</span>
+                        </a>
                     </li>
-                  {% endif %}
-                  <li>
-                    <a href="{% url 'search_schedule' %}" class="nav-link px-3">
-                      <span class="me-2"><i class="bi bi-calendar-month-fill"></i></span>
-                      <span>Monthly Schedule</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li>
-              <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#reume_layouts">
-                <span class="me-2"><i class="bi bi-book-fill"></i></span>
-                <span>Digital Resume</span>
-                <span class="ms-auto">
-                  <span class="right-icon">
-                    <i class="bi bi-airplane"></i>
-                  </span>
-                </span>
-              </a>
-              <div class="collapse" id="reume_layouts">
-                <ul class="navbar-nav ps-3">
-
+                    <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
                     <li>
-                      <a href="{% url 'add_resume' %}" class="nav-link px-3">
-                        <span class="me-2"><i class="bi bi-speedometer2"></i></span>
-                        <span>Add Resume</span>
-                      </a>
+                        <div class="text-muted small fw-bold text-uppercase px-3 mb-3">Interface</div>
                     </li>
-
-                  <li>
-                    <a href="{% url 'digital_resume' %}" class="nav-link px-3">
-                      <span class="me-2"><i class="bi bi-speedometer2"></i></span>
-                      <span>Fleet Resume</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
-            <li>
-              <div class="text-muted small fw-bold text-uppercase px-3 mb-3">Miscellaneous</div>
-            </li>
-            <li>
-              <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#flight_schedule">
-                <span class="me-2"><i class="bi bi-airplane-engines-fill"></i></span>
-                <span>Flight Schedule</span>
-                <span class="ms-auto">
-                  <span class="right-icon">
-                    <i class="bi bi-airplane"></i>
-                  </span>
-                </span>
-              </a>
-              <div class="collapse" id="flight_schedule">
-                <ul class="navbar-nav ps-3">
-                  {% if user.profile.role == 'team_leader' %}
                     <li>
-                      <a href="{% url 'add_flight_schedule' %}" class="nav-link px-3">
-                        <span class="me-2"><i class="bi bi-person-add"></i></span>
-                        <span>Add Flight Schedule</span>
-                      </a>
+                        <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#daily_sssignment">
+                            <span class="me-2"><i class="bi bi-person-walking"></i></span>
+                            <span>Daily Assignment</span>
+                            <span class="ms-auto">
+                                <span class="right-icon">
+                                    <i class="bi bi-airplane"></i>
+                                </span>
+                            </span>
+                        </a>
+                        <div class="collapse" id="daily_sssignment">
+                            <ul class="navbar-nav ps-3">
+                                {% if user.is_staff  or user.profile.role == 'team_leader' %}
+                                    <li>
+                                        <a href="{% url 'daily_assignment' %}" class="nav-link px-3">
+                                            <span class="me-2"><i class="bi bi-person-add"></i></span>
+                                            <span>Create Assignment</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li>
+                                    <a href="{% url 'daily_assignment' %}" class="nav-link px-3">
+                                        <span class="me-2"><i class="bi bi-calendar-month-fill"></i></span>
+                                        <span>View Assignment</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
-                  {% endif %}
-                  <li>
-                    <a href="{% url 'flight_schedule' %}" class="nav-link px-3">
-                      <span class="me-2"><i class="bi bi-cloudy"></i></span>
-                      <span>Flight Schedule</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li>
-              <a href="#" class="nav-link px-3">
-                <span class="me-2"><i class="bi bi-table"></i></span>
-                <span>Vacation Schedule</span>
-              </a>
-            </li>
-            <li>
-              <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#customer_handling">
-                <span class="me-2"><i class="bi bi-airplane"></i></span>
-                <span>Customer Handling</span>
-                <span class="ms-auto">
-                  <span class="right-icon">
-                    <i class="bi bi-airplane"></i>
-                  </span>
-                </span>
-              </a>
-              <div class="collapse" id="customer_handling">
-                <ul class="navbar-nav ps-3">
                     <li>
-                      <a href="{% url 'log_create' %}" class="nav-link px-3">
-                        <span class="me-2"><i class="bi bi-person-add"></i></span>
-                        <span>Add Customer Flight</span>
-                      </a>
+                        <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#layouts">
+                            <span class="me-2"><i class="bi bi-table"></i></span>
+                            <span>Monthly Crew Schedule</span>
+                            <span class="ms-auto">
+                                <span class="right-icon">
+                                    <i class="bi bi-airplane"></i>
+                                </span>
+                            </span>
+                        </a>
+                        <div class="collapse" id="layouts">
+                            <ul class="navbar-nav ps-3">
+                                {% if user.is_staff  or user.profile.role == 'team_leader' %}
+                                    <li>
+                                        <a href="{% url 'start_schedule' %}" class="nav-link px-3">
+                                            <span class="me-2"><i class="bi bi-person-add"></i></span>
+                                            <span>Add Schedule</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li>
+                                    <a href="{% url 'search_schedule' %}" class="nav-link px-3">
+                                        <span class="me-2"><i class="bi bi-calendar-month-fill"></i></span>
+                                        <span>Monthly Schedule</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
-
-                  <li>
-                    <a href="{% url 'operator_airline' %}" class="nav-link px-3">
-                      <span class="me-2"><i class="bi bi-cloudy"></i></span>
-                      <span>Operators handling</span>
-                    </a>
-                  </li>
-
+                    <li>
+                        <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#reume_layouts">
+                            <span class="me-2"><i class="bi bi-book-fill"></i></span>
+                            <span>Digital Resume</span>
+                            <span class="ms-auto">
+                                <span class="right-icon">
+                                    <i class="bi bi-airplane"></i>
+                                </span>
+                            </span>
+                        </a>
+                        <div class="collapse" id="reume_layouts">
+                            <ul class="navbar-nav ps-3">
+                                <li>
+                                    <a href="{% url 'add_resume' %}" class="nav-link px-3">
+                                        <span class="me-2"><i class="bi bi-speedometer2"></i></span>
+                                        <span>Add Resume</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'digital_resume' %}" class="nav-link px-3">
+                                        <span class="me-2"><i class="bi bi-speedometer2"></i></span>
+                                        <span>Fleet Resume</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
+                    <li>
+                        <div class="text-muted small fw-bold text-uppercase px-3 mb-3">Miscellaneous</div>
+                    </li>
+                    <li>
+                        <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#flight_schedule">
+                            <span class="me-2"><i class="bi bi-airplane-engines-fill"></i></span>
+                            <span>Flight Schedule</span>
+                            <span class="ms-auto">
+                                <span class="right-icon">
+                                    <i class="bi bi-airplane"></i>
+                                </span>
+                            </span>
+                        </a>
+                        <div class="collapse" id="flight_schedule">
+                            <ul class="navbar-nav ps-3">
+                                {% if user.is_staff  or user.profile.role == 'team_leader' %}
+                                    <li>
+                                        <a href="{% url 'add_flight_schedule' %}" class="nav-link px-3">
+                                            <span class="me-2"><i class="bi bi-person-add"></i></span>
+                                            <span>Add Flight Schedule</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                <li>
+                                    <a href="{% url 'flight_schedule' %}" class="nav-link px-3">
+                                        <span class="me-2"><i class="bi bi-cloudy"></i></span>
+                                        <span>Flight Schedule</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-3">
+                            <span class="me-2"><i class="bi bi-table"></i></span>
+                            <span>Vacation Schedule</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#customer_handling">
+                            <span class="me-2"><i class="bi bi-airplane"></i></span>
+                            <span>Customer Handling</span>
+                            <span class="ms-auto">
+                                <span class="right-icon">
+                                    <i class="bi bi-airplane"></i>
+                                </span>
+                            </span>
+                        </a>
+                        <div class="collapse" id="customer_handling">
+                            <ul class="navbar-nav ps-3">
+                                <li>
+                                    <a href="{% url 'log_create' %}" class="nav-link px-3">
+                                        <span class="me-2"><i class="bi bi-person-add"></i></span>
+                                        <span>Add Customer Flight</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'operator_airline' %}" class="nav-link px-3">
+                                        <span class="me-2"><i class="bi bi-cloudy"></i></span>
+                                        <span>Operators handling</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
+                    <li>
+                        <a href="#" class="nav-link px-3">
+                            <span class="me-2"><i class="bi bi-table"></i></span>
+                            <span>Quality Team</span>
+                        </a>
+                    </li>
+                    </li>
                 </ul>
-              </div>
-                <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
-                 <li>
-              <a href="#" class="nav-link px-3">
-                <span class="me-2"><i class="bi bi-table"></i></span>
-                <span>Quality Team is here</span>
-              </a>
-            </li>
-            </li>
-          </ul>
-        </nav>
-      </div>
+            </nav>
+        </div>
     </div>
     <!-- offcanvas -->
     <main class="mt-5 pt-3">
-      <div class="container-fluid">
-        <div class="mx-auto">
+        <div class="container-fluid">
+            <div class="mx-auto">
 
-          {% block content %}
-          {% endblock %}
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
-      </div>
+         <!-- Modal -->
+     <div class="modal" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="modal-content">
+                <!-- HTMX will load content here -->
+            </div>
+        </div>
+    </div>
     </main>
-
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+       <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
     <script src="{% static 'js/jquery-3.5.1.js' %}"></script>
     <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
@@ -287,8 +269,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-  <!-- Bootstrap Select JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
-  {% include 'change_password_modal.html' %}
-  </body>
+    <!-- Bootstrap Select JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+</body>
 </html>
